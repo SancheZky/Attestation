@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+<h1>Тестовое приложение по Spring Security</h1>
+
+<!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+<!--<a href="/logout">Выход из личного кабинета</a>-->
+
+<!--можно  обзязать формой кнопку-->
+<form method="post" th:action="@{/logout}">
+    <button type="submit">Выход из личного кабинета</button>
+</form>
+
+</body>
+</html>
