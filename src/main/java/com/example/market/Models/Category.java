@@ -1,9 +1,8 @@
 package com.example.market.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Category {
@@ -12,6 +11,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     private String name;
+
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    private List<Product> products;
+
+
 
 }
