@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name="person")
 public class Person {
@@ -24,6 +26,11 @@ public class Person {
 
     @Column(name="role")
     private String role;
+
+    @ManyToMany
+    @JoinTable(name="product_cart", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> productList;
+
 
     public int getId() {
         return id;
