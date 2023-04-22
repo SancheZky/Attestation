@@ -24,14 +24,14 @@ public class SecurityConfig{
         // конфигурируем работу спринг.сек.
         httpSecurity//.csrf().disable()       // отключить защиту от межсайтовой подделки запросов
                 .authorizeHttpRequests()    // все страницы должны быть защищены аутентификацией
-                .requestMatchers("/login", "/error", "/registration","/css/**").permitAll() // какие страницы достпны всем пользователям
+                .requestMatchers("/login", "/error", "/registration","/css/**", "/js/**", "/img/**", "/product", "/product/info/{id}").permitAll() // какие страницы достпны всем пользователям
                 .requestMatchers("/admin").hasRole("ADMIN") // в админку только  с сролью админа
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 //.anyRequest().authenticated()   // для всех остальных  нужна аутентификация
                 .and()  // соединитель указывает что дальше настраивается аутентификация и соединяем ее с настройкой доступа
                 .formLogin().loginPage("/login")    // url формы для логина
                 .loginProcessingUrl("/process_login")   // куда отправлять данные  с формы. Не приджется создавать метод в контроллере и обрабатывать данные с формы
-                .defaultSuccessUrl("/index", true) // перейити в случае успешной аутентификации
+                .defaultSuccessUrl("/account", true) // перейити в случае успешной аутентификации
                 .failureUrl("/login?error") // куда перенаправить  в случае неудачи. в запрос будет передан объект error
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login"); // выйти из аккаунта

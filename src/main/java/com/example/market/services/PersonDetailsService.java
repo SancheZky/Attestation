@@ -1,8 +1,8 @@
 package com.example.market.services;
 
-import com.example.market.Models.Person;
 import com.example.market.repositories.PersonRepository;
 import com.example.market.security.PersonDetails;
+import com.example.market.Models.Person;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

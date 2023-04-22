@@ -3,7 +3,6 @@ package com.example.market.Models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Normalized;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

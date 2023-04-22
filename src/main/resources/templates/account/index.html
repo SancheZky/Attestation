@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+</head>
+<body>
+<!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+<!--<a href="/logout">Выход из личного кабинета</a>-->
+<!--можно  обзязать формой кнопку-->
+<form method="post" th:action="@{/logout}">
+    <button type="submit">Выход из личного кабинета</button>
+</form>
+
+<h1>Каталог товаров</h1>
+
+<div th:each="product:${products}">
+    <hr><br>
+    <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
+    <br>
+    <a th:href="@{/account/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}">  </a>
+
+    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+
+</div>
+
+</body>
+</html>

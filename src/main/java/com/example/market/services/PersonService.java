@@ -1,7 +1,7 @@
 package com.example.market.services;
 
-import com.example.market.Models.Person;
 import com.example.market.repositories.PersonRepository;
+import com.example.market.Models.Person;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

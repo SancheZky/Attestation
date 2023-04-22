@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог продуктов</title>
+</head>
+<body>
+<h1>Каталог продуктов</h1>
+
+
+
+<div th:each="product:${products}">
+  <hr><br>
+  <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
+  <br>
+  <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}">  </a>
+
+  <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+
+</div>
+</body>
+</html>
