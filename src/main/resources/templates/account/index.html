@@ -2,16 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Главная страница</title>
+    <title>Личный кабинет</title>
 </head>
 <body>
+<h1>Личный кабинет</h1>
 <!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
 <!--<a href="/logout">Выход из личного кабинета</a>-->
 <!--можно  обзязать формой кнопку-->
 <form method="post" th:action="@{/logout}">
     <button type="submit">Выход из личного кабинета</button>
 </form>
+<h3>Сортировка, поиск, фильтрация</h3>
+<form th:method="POST" th:action="@{/account/search}">
+    <fieldset>
+        <legend> Выбере параметры сортировки, поиска, фильтрации</legend>
+        <label for="search">Поиск по наименованию: </label>
+        <input type="text" id="search" name="search"  th:value="*{value_search}">
+        <br>
+        <p>Цена, Р</p>
+        <label for="ot">От</label>
+        <input type="text" name="ot" id="ot"  th:value="*{value_price_ot}">
+        <label for="do">До</label>
+        <input type="text" name="do" id="do"  th:value="*{value_price_do}">
+        <br>
+        <br>
+        <div>
+            <input type="radio" id="ascending_price" name="price" value="sort_by_asc_price">
+            <label for="ascending_price">Сортировать по возрастанию цены</label>
+            <br>
+            <input type="radio" id="descending_price" name="price" value="sort_by_desc_price">
+            <label for="descending_price">Сортировать по убыванию цены</label>
+            <p>Категория товаров: </p>
+            <input type="radio" id="furniture" name="contract" value="furniture">
+            <label for="furniture">Мебель</label>
+            <br>
+            <input type="radio" id="appliances" name="contract" value="appliances">
+            <label for="appliances">Бытовая техника</label>
+            <br>
+            <input type="radio" id="clothes" name="contract" value="clothes">
+            <label for="clothes">Одежда</label>
+            <br><br>
+            <input type="submit" value="Применить фильтр">
+        </div>
+    </fieldset>
 
+</form>
+<hr>
+<h2>Результат применения фильтров</h2>
+<div th:each="product:${search_product}">
+    <hr>
+    <br>
+    <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
+    <br>
+    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"> </a>
+
+    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+
+</div>
 <h1>Каталог товаров</h1>
 
 <div th:each="product:${products}">
