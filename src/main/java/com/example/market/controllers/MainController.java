@@ -1,8 +1,11 @@
 package com.example.market.controllers;
 
 import com.example.market.Models.Cart;
+import com.example.market.Models.Order;
 import com.example.market.Models.Product;
+import com.example.market.enums.Status;
 import com.example.market.repositories.CartRepository;
+import com.example.market.repositories.OrderRepository;
 import com.example.market.repositories.ProductRepository;
 import com.example.market.security.PersonDetails;
 import com.example.market.Models.Person;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class MainController {
@@ -28,14 +32,16 @@ public class MainController {
     private final ProductService productService;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
 
 
-    public MainController(PersonValidator personValidator, PersonService personService, ProductService productService, ProductRepository productRepository, CartRepository cartRepository) {
+    public MainController(PersonValidator personValidator, PersonService personService, ProductService productService, ProductRepository productRepository, CartRepository cartRepository, OrderRepository orderRepository) {
         this.personValidator = personValidator;
         this.personService = personService;
         this.productService = productService;
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping("/account")
@@ -48,6 +54,7 @@ public class MainController {
             return "redirect:/admin";
         }
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "/account/index";
     }
 
@@ -151,7 +158,6 @@ public class MainController {
             products.add(product);
             totalPrice += product.getPrice();
         }
-
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", totalPrice);
 
@@ -163,13 +169,51 @@ public class MainController {
         int person_id = getSessionPersonId();
         cartRepository.deleteCartByPersonIdAndProductId(person_id, id);
         return "redirect:/account/cart";
-
     }
 
     public int getSessionPersonId() {
+        return getSessionPerson().getId();
+    }
+
+    public Person getSessionPerson(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        return personDetails.getPerson().getId();
+        return personDetails.getPerson();
+    }
+
+
+    @GetMapping("/account/order/create")
+    public String order(){
+        int person_id = getSessionPersonId();
+
+        List<Cart> cartList = cartRepository.findByPersonId(person_id);
+        List<Product> products = new ArrayList<>();
+
+        float totalPrice = 0;
+
+        for (Cart cart : cartList) {
+            Product product = productService.getProductById(cart.getProductId());
+            products.add(product);
+            totalPrice += product.getPrice();
+        }
+
+        String uuid = UUID.randomUUID().toString();
+        for(Product product : products){
+            Order newOrder = new Order(uuid,product, getSessionPerson(), 1, product.getPrice(), Status.Оформлен);
+            orderRepository.save(newOrder);
+            cartRepository.deleteCartByPersonIdAndProductId(person_id, product.getId());
+        }
+        return "redirect:/account/orders";
+    }
+
+
+    @GetMapping("/account/orders")
+    public String orderList(Model model){
+        int id = getSessionPersonId();
+        List<Order> orderList = orderRepository.findByPersonId(id);
+        model.addAttribute("orders", orderList);
+
+        return "/account/orders";
     }
 
 }

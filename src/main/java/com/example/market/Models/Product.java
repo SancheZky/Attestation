@@ -46,6 +46,9 @@ public class Product {
     @JoinTable(name="product_cart", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "person_id"))
     private List<Person> personList;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<Order> orders;
+
     private LocalDateTime dateTime;
 
     // будет запролнять поле даты и времени при создании объекта класса

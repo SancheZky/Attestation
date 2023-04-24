@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,4 +30,33 @@ public class PersonService {
         person.setRole("ROLE_USER");
         personRepository.save(person);
     }
+
+    public List<Person> getAllPersons(){
+        return personRepository.findAll();
+    }
+
+    //Установить пользователю роль простого пользователя
+    @Transactional
+    public void setRoleUSER(int id){
+        Optional<Person> personOptional = personRepository.findById(id);
+        if(personOptional.isPresent()){
+            Person person = personOptional.get();
+            person.setRole("ROLE_USER");
+            personRepository.save(person);
+        }
+
+    }
+
+    // установить пользоватлею роль администратора
+    @Transactional
+    public void setRoleADMIN(int id){
+        Optional<Person> personOptional = personRepository.findById(id);
+        if(personOptional.isPresent()){
+            Person person = personOptional.get();
+            person.setRole("ROLE_ADMIN");
+            personRepository.save(person);
+        }
+
+    }
+
 }

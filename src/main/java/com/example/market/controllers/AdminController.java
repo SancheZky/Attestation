@@ -2,12 +2,15 @@ package com.example.market.controllers;
 
 import com.example.market.Models.Category;
 import com.example.market.Models.Image;
+import com.example.market.Models.Order;
+import com.example.market.enums.Status;
 import com.example.market.repositories.CategoryRepository;
 import com.example.market.Models.Product;
+import com.example.market.services.OrderService;
+import com.example.market.services.PersonService;
 import com.example.market.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.SpringVersion;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,19 +29,25 @@ public class AdminController {
     private final CategoryRepository categoryRepository;
     private final ProductService productService;
 
-    public AdminController(CategoryRepository categoryRepository, ProductService productService) {
+    private final PersonService personService;
+
+    private final OrderService orderService;
+
+    public AdminController(CategoryRepository categoryRepository, ProductService productService, PersonService personService, OrderService orderService) {
         this.categoryRepository = categoryRepository;
         this.productService = productService;
+        this.personService = personService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/admin")
     public String admin(Model model){
         model.addAttribute("products", productService.getAllProducts());
 
-        return "admin";
+        return "admin/admin";
     }
 
-    @GetMapping("admin/product/add")
+    @GetMapping("/admin/product/add")
     public String addProductForm(Model model){
         model.addAttribute("product", new Product());
         model.addAttribute("category", categoryRepository.findAll());
@@ -46,7 +55,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("admin/product/add")
+    @PostMapping("/admin/product/add")
     public String addProductForm(
             @ModelAttribute("product") @Valid Product product,
             BindingResult bindingResult,
@@ -75,20 +84,20 @@ public class AdminController {
         return "redirect:/admin";
 
     }
-    @GetMapping("admin/product/delete/{id}")
+    @GetMapping("/admin/product/delete/{id}")
     public String deleteProduct(@PathVariable("id") int id){
         productService.deleteProduct(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("admin/product/edit/{id}")
+    @GetMapping("/admin/product/edit/{id}")
     public String editProduct(Model model, @PathVariable("id") int id){
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("category", categoryRepository.findAll());
         return "product/edit-product-form";
     }
 
-    @PostMapping("admin/product/edit/{id}")
+    @PostMapping("/admin/product/edit/{id}")
     public String editProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @PathVariable("id") int id, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("category", categoryRepository.findAll());
@@ -98,6 +107,46 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/admin/persons")
+    private String users(Model model){
+        model.addAttribute("persons", personService.getAllPersons());
+        return "admin/persons_admin";
+    }
+
+    @GetMapping("/admin/person/setAdminRole/{id}")
+    public String personSetAdminRole(@PathVariable("id") int id){
+        personService.setRoleADMIN(id);
+        return "redirect:/admin/persons";
+    }
+
+    @GetMapping("/admin/person/setUserRole/{id}")
+    public String personSetUserRole(@PathVariable("id") int id){
+        personService.setRoleUSER(id);
+        return "redirect:/admin/persons";
+    }
+
+    @GetMapping("/admin/orders")
+    public String orders(Model model){
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("tail", "");
+        return "admin/orders_admin";
+    }
+
+    @PostMapping("/admin/order/status/{id}")
+    public String orders(Model model, @PathVariable("id") int id, @RequestParam("status") Status status){
+        orderService.setStatus(id, status);
+        return "redirect:/admin/orders";
+    }
+
+    @GetMapping("/order/search")
+    public String orderSearch(Model model, @RequestParam("tail") String tail){
+        model.addAttribute("orders", orderService.getByNumberTail(tail));
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("tail", tail);
+
+        return "admin/orders_admin";
+    }
 
 
     private void addFile(Product product, MultipartFile file) throws IOException {
@@ -116,6 +165,7 @@ public class AdminController {
             product.addImageToProduct(image);
         }
     }
+
 
 
 }
