@@ -1,0 +1,27 @@
+img {
+  height: 200px;
+  width: 300px;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+
+.show {
+  height: 200px;
+  width: 300px;
+  border-radius: 10px;
+  margin: 10px;
+  display: inline;
+}
+
+.show:hover {
+  transform: scale(2, 2);
+  transition: 0.2s;
+  box-shadow: 10px 10px 10px rgb(166, 158, 158);
+  cursor: url("../cursors/search-icon.png"), pointer;
+}
+
+.show:focus {
+  transform: scale(2, 2);
+  transition: 0.2s;
+}
