@@ -1,0 +1,169 @@
+html,
+body {
+    height: 100%;
+    font-family: CustomFont1;
+    background-image: url("../images/bgr.jpg");
+}
+
+@font-face {
+    src: url("../fonts/21139.otf");
+    font-family: "CustomFont2";
+}
+
+@font-face {
+    src: url("../fonts/21002.ttf");
+    font-family: "CustomFont1";
+}
+
+* {
+    cursor: url("../cursors/Mushroom.cur"), pointer;
+}
+
+.grid {
+    width: 90%;
+    margin: auto;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto;
+    grid-template-rows: 400px auto auto auto 400px;
+    grid-template-areas:
+    "header"
+    "login"
+    "nav"
+    "main"
+    "footer";
+}
+
+.login{
+    grid-area: login;
+    padding: 10px;
+    text-align: right;
+}
+
+.filter{
+    padding: 15px;
+}
+
+header {
+    grid-area: header;
+    background-color: white;
+    box-shadow: 2px 2px 15px gray;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 15px;
+}
+
+.loginForm{
+    background-color: white;
+    box-shadow: 2px 2px 15px gray;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    margin: auto;
+    margin-top: 15px;
+    padding: 20px;
+    width: 80%;
+
+}
+
+nav {
+    grid-area: nav;
+    background-color: honeydew;
+    box-shadow: 2px 2px 15px gray;
+    border-radius: 15px;
+    margin-top: 15px;
+}
+
+.inlineForm{
+    display: inline;
+}
+
+
+main {
+    grid-area: main;
+}
+
+article {
+    background-color: honeydew;
+    box-shadow: 2px 2px 15px gray;
+    border-radius: 15px;
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.flexed {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+section {
+    background-color: white;
+    box-shadow: 2px 2px 15px gray;
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin-top: 25px;
+    margin-right: 25px;
+    padding: 15px;
+    width: 350px;
+    text-align: center;
+}
+
+section:hover {
+    transform: scale(1.02, 1.02);
+    transition: 0.2s;
+    box-shadow: 10px 10px 10px rgb(166, 158, 158);
+}
+
+footer {
+    grid-area: footer;
+    background-color: lightgray;
+    box-shadow: 2px 2px 15px gray;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+h2,
+h3 {
+    font-family: CustomFont2;
+    color: darkolivegreen;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+video {
+    position: absolute;
+    display: block;
+    width: 100%;
+}
+
+.shadow {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 50%;
+}
+
+.introContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-h1 {
+    font-family: CustomFont2;
+    text-shadow: 3px 3px 2px black;
+    font-size: 60px;
+    text-align: center;
+    margin: 0;
+    color: rgb(201, 228, 201);
+}

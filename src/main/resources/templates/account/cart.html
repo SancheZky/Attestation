@@ -3,24 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Корзина</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="/css/galery.css"/>
+    <link rel="stylesheet" href="/css/navigation.css"/>
+    <link rel="icon" href="/images/ico.png" type="image/png"/>
+
 </head>
-<body>
-<h1>Товары в корзине</h1>
-<h2 th:text="'Общая стоимость товаров: ' + ${totalPrice}"></h2>
+<body class="grid">
+<header id="begin">
+    <video src="/videos/video.mp4" autoplay muted loop></video>
+    <div class="shadow"></div>
+    <div class="introContent">
+        <h1 class="main-h1">
+            Дары Сибири. Инетернет магазин грибов, ягод и орехов
+        </h1>
+    </div>
+</header>
 
-<br>
-<a href="/account/order/create">Оформить заказ</a>
+<nav class="login">
+    <!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+    <!--<a href="/logout">Выход из личного кабинета</a>-->
+    <!--можно  обзязать формой кнопку-->
 
-<div th:each="product:${products}">
-    <hr><br>
-    <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
-    <br>
-    <br>
-    <a th:href="@{/account/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}">  </a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <a th:href="@{/account/cart/delete/{id}(id=${product.getId()})}">Удалить товар  из корзины</a>
-</div>
-<br><br>
-<a href="/account/order/create">Оформить заказ</a>
+    <h4 class="inlineForm" th:text="'Корзина пользователя: ' + ${user} + ' '"></h4> &emsp; &emsp;
+
+    <form class="inlineForm" method="get" th:action="@{/account}">
+        <button class="btn btn-secondary" type="submit">Каталог товаров</button>
+    </form>
+
+    <form class="inlineForm" method="get" th:action="@{/account/cart}">
+        <button class="btn btn-success" type="submit">Корзина</button>
+    </form>
+
+    <form class="inlineForm" method="get" th:action="@{/account/orders}">
+        <button class="btn btn-secondary" type="submit">Мои заказы</button>
+    </form>
+
+    <form class="inlineForm" method="post" th:action="@{/logout}">
+        <button class="btn btn-danger" type="submit">Выход из личного кабинета</button>
+    </form>
+
+</nav>
+<main>
+    <article>
+        <h2>Товары в корзине</h2>
+        <h2 th:text="'Общая стоимость товаров: ' + ${totalPrice}"></h2>
+
+        <br>
+        <a href="/account/order/create" class="btn btn-primary">Оформить заказ</a>
+        <div class="flexed">
+        <section th:each="product:${products}">
+
+            <img th:src="'/img/' + ${product.images[0].getFileName()}">
+            <br>
+            <a  class="btn btn-link" th:href="@{/account/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"> </a>
+            <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+            <a th:href="@{/account/cart/delete/{id}(id=${product.getId()})}" class="btn btn-primary">Удалить товар из корзины</a>
+        </section>
+        </div>
+        <br>
+        <a href="/account/order/create" class="btn btn-primary">Оформить заказ</a>
+    </article>
+</main>
+<footer>
+
+</footer>
 </body>
 </html>

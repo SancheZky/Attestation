@@ -3,20 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Информация о товаре</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="/css/galery.css"/>
+    <link rel="stylesheet" href="/css/navigation.css"/>
+    <link rel="icon" href="/images/ico.png" type="image/png"/>
+
 </head>
-<body>
-  <h1>Информация о товаре</h1>
+<body class="grid">
+<header id="begin">
+    <video src="/videos/video.mp4" autoplay muted loop></video>
+    <div class="shadow"></div>
+    <div class="introContent">
+        <h1 class="main-h1">
+            Дары Сибири. Инетернет магазин грибов, ягод и орехов
+        </h1>
+    </div>
+</header>
 
-  <p th:text="'Наименование: ' + ${product.getTitle()}"></p>
-  <p th:text="'Описание: ' + ${product.getDescription()}"></p>
-  <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-  <p th:text="'Склад: ' + ${product.getWarehouse()}"></p>
-  <p th:text="'Продавец: ' + ${product.getSeller()}"></p>
-  <p th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
+<nav class="login">
+    <!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+    <!--<a href="/logout">Выход из личного кабинета</a>-->
+    <!--можно  обзязать формой кнопку-->
 
-  <div th:each="img:${product.getImages()}">
-    <img th:src="'/img/' + ${img.getFileName()}" width="300px">
-  </div>
+    <form class="inlineForm" method="get" th:action="@{/account}">
+        <button class="btn btn-success" type="submit">Каталог товаров</button>
+    </form>
+
+    <form class="inlineForm" method="get" th:action="@{/account/cart}">
+        <button class="btn btn-secondary" type="submit">Корзина</button>
+    </form>
+
+    <form class="inlineForm" method="get" th:action="@{/account/orders}">
+        <button class="btn btn-secondary" type="submit">Мои заказы</button>
+    </form>
+
+    <form class="inlineForm" method="post" th:action="@{/logout}">
+        <button class="btn btn-danger" type="submit">Выход из личного кабинета</button>
+    </form>
+
+</nav>
+<main>
+    <article>
+        <h2>Информация о товаре</h2>
+
+        <p th:text="'Наименование: ' + ${product.getTitle()}"></p>
+        <p th:text="'Описание: ' + ${product.getDescription()}"></p>
+        <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+        <p th:text="'Склад: ' + ${product.getWarehouse()}"></p>
+        <p th:text="'Продавец: ' + ${product.getSeller()}"></p>
+        <p th:text="'Категория: ' + ${product.getCategory().getName()}"></p>
+            <img class="show" th:each="img:${product.getImages()}" th:src="'/img/' + ${img.getFileName()}" >
+    </article>
+</main>
+<footer>
+
+</footer>
 
 
 </body>

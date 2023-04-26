@@ -79,7 +79,7 @@ public class MainController {
     @GetMapping("/account/product/info/{id}")
     public String infoProduct(@PathVariable("id") int id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
-
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "/account/info-product";
     }
 
@@ -97,35 +97,34 @@ public class MainController {
             if (price.equals("sort_by_asc_price")) {
                 if (!contract.isEmpty()) {
                     if (contract.equals("furniture")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
                     } else if (contract.equals("appliances")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
                     } else if (contract.equals("clothes")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
                     }
                 } else {
-                    model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
+                    model.addAttribute("products", productRepository.finByTitleAndFilterByPriceOrderByPriceAsc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
                 }
             } else if (price.equals("sort_by_desc_price")) {
                 if (!contract.isEmpty()) {
                     if (contract.equals("furniture")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 1));
                     } else if (contract.equals("appliances")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 3));
                     } else if (contract.equals("clothes")) {
-                        model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
+                        model.addAttribute("products", productRepository.finByTitleAndFilterByPriceAndFilterByCategoryOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do), 2));
                     }
                 } else {
-                    model.addAttribute("search_product", productRepository.finByTitleAndFilterByPriceOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
+                    model.addAttribute("products", productRepository.finByTitleAndFilterByPriceOrderByPriceDesc(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
                 }
             } else {
-                model.addAttribute("search_product", productRepository.findByTitleAndFilterByPrice(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
+                model.addAttribute("products", productRepository.findByTitleAndFilterByPrice(search.toLowerCase(), Float.parseFloat(ot), Float.parseFloat(Do)));
             }
         } else {
-            model.addAttribute("search_product", productRepository.findByTitleContainingIgnoreCase(search.toLowerCase()));
+            model.addAttribute("products", productRepository.findByTitleContainingIgnoreCase(search.toLowerCase()));
         }
 
-        model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("value_search", search);
         model.addAttribute("value_price_ot", ot);
         model.addAttribute("value_price_do", Do);
@@ -160,6 +159,7 @@ public class MainController {
         }
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("user", getSessionPerson().getLogin());
 
         return "/account/cart";
     }
@@ -212,6 +212,7 @@ public class MainController {
         int id = getSessionPersonId();
         List<Order> orderList = orderRepository.findByPersonId(id);
         model.addAttribute("orders", orderList);
+        model.addAttribute("user", getSessionPerson().getLogin());
 
         return "/account/orders";
     }

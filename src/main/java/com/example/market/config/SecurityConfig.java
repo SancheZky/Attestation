@@ -24,8 +24,8 @@ public class SecurityConfig{
         // конфигурируем работу спринг.сек.
         httpSecurity//.csrf().disable()       // отключить защиту от межсайтовой подделки запросов
                 .authorizeHttpRequests()    // все страницы должны быть защищены аутентификацией
-                .requestMatchers("/","/login", "/error", "/registration","/css/**", "/js/**", "/img/**", "/product", "/product/info/{id}", "/product/search").permitAll() // какие страницы достпны всем пользователям
-                .requestMatchers("/admin").hasRole("ADMIN") // в админку только  с сролью админа
+                .requestMatchers("/","/login", "/error", "/registration","/css/**", "/js/**", "/img/**", "/product", "/product/info/{id}", "/product/search","/cursors/**","/fonts/**","/images/**","/videos/**").permitAll() // какие страницы достпны всем пользователям
+                .requestMatchers("/admin/**", "/admin/product/add").hasRole("ADMIN") // в админку только  с сролью админа
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 //.anyRequest().authenticated()   // для всех остальных  нужна аутентификация
                 .and()  // соединитель указывает что дальше настраивается аутентификация и соединяем ее с настройкой доступа

@@ -1,16 +1,16 @@
 package com.example.market.controllers;
 
-import com.example.market.Models.Category;
-import com.example.market.Models.Image;
-import com.example.market.Models.Order;
+import com.example.market.Models.*;
 import com.example.market.enums.Status;
 import com.example.market.repositories.CategoryRepository;
-import com.example.market.Models.Product;
+import com.example.market.security.PersonDetails;
 import com.example.market.services.OrderService;
 import com.example.market.services.PersonService;
 import com.example.market.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,6 +43,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String admin(Model model){
         model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("user", getSessionPerson().getLogin());
 
         return "admin/admin";
     }
@@ -51,6 +52,7 @@ public class AdminController {
     public String addProductForm(Model model){
         model.addAttribute("product", new Product());
         model.addAttribute("category", categoryRepository.findAll());
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "product/add-product-form";
     }
 
@@ -62,8 +64,6 @@ public class AdminController {
             @RequestParam("file_1") MultipartFile file_1,
             @RequestParam("file_2") MultipartFile file_2,
             @RequestParam("file_3") MultipartFile file_3,
-            @RequestParam("file_4") MultipartFile file_4,
-            @RequestParam("file_5") MultipartFile file_5,
             @RequestParam("category") int categoryId,
             Model model
             ) throws IOException {
@@ -76,8 +76,6 @@ public class AdminController {
         addFile(product,file_1);
         addFile(product,file_2);
         addFile(product,file_3);
-        addFile(product,file_4);
-        addFile(product,file_5);
 
         productService.saveProduct(product,category_db);
 
@@ -94,6 +92,7 @@ public class AdminController {
     public String editProduct(Model model, @PathVariable("id") int id){
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("category", categoryRepository.findAll());
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "product/edit-product-form";
     }
 
@@ -110,6 +109,7 @@ public class AdminController {
     @GetMapping("/admin/persons")
     private String users(Model model){
         model.addAttribute("persons", personService.getAllPersons());
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "admin/persons_admin";
     }
 
@@ -130,6 +130,7 @@ public class AdminController {
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("statuses", Status.values());
         model.addAttribute("tail", "");
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "admin/orders_admin";
     }
 
@@ -144,7 +145,7 @@ public class AdminController {
         model.addAttribute("orders", orderService.getByNumberTail(tail));
         model.addAttribute("statuses", Status.values());
         model.addAttribute("tail", tail);
-
+        model.addAttribute("user", getSessionPerson().getLogin());
         return "admin/orders_admin";
     }
 
@@ -166,6 +167,15 @@ public class AdminController {
         }
     }
 
+    public int getSessionPersonId() {
+        return getSessionPerson().getId();
+    }
+
+    public Person getSessionPerson(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+        return personDetails.getPerson();
+    }
 
 
 }

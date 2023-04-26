@@ -3,51 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>Управление заказами</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="/css/galery.css"/>
+    <link rel="stylesheet" href="/css/navigation.css"/>
+    <link rel="icon" href="/images/ico.png" type="image/png"/>
+
 </head>
-<body>
-<br>
-<a href="/admin" class="btn btn-primary">Управление товарами</a>
-<a href="/admin/persons" class="btn btn-primary">Управление пользователями</a><br><br>
-<form method="post" th:action="@{/logout}">
-    <button type="submit" class="btn btn-primary">Выход из личного кабинета</button>
-</form>
-<hr>
+<body class="grid">
+<header id="begin">
+    <video src="/videos/video.mp4" autoplay muted loop></video>
+    <div class="shadow"></div>
+    <div class="introContent">
+        <h1 class="main-h1">
+            Дары Сибири. Инетернет магазин грибов, ягод и орехов
+        </h1>
+    </div>
+</header>
 
-<h1>Управление заказами</h1>
-<hr>
+<nav class="login">
+    <!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+    <!--<a href="/logout">Выход из личного кабинета</a>-->
+    <!--можно  обзязать формой кнопку-->
 
-<form th:method="GET" th:action="@{/order/search}">
-        <label for="tail">Поиск заказа по последним 4-м символам: </label>
-        <input type="text" id="tail" name="tail"  th:value="*{tail}"  maxlength="4">
-        <br><br>
-            <input type="submit" value="Применить фильтр"  class="btn btn-primary"> <a href="/admin/orders" class="btn btn-primary">Показать все заказы</a><br><br>
-        </div>
-</form>
-
-<hr>
-<div th:each="order:${orders}">
-    <h3 th:text="'Заказ №: ' + ${order.getNumber()}"></h3>
-    <img th:src="'/img/' + ${order.getProduct().getImages()[0].getFileName()}" width="300px">
-    <br>
-    <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
-    <p th:text="'Количество: ' + ${order.getCount()}"></p>
-    <p th:text="'Цена: ' + ${order.getPrice()}"></p>
-    <p th:text="'Дата : ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
-    <p th:text="'Статус: ' + ${order.getStatus()}"></p>
-
-    <form th:method="POST" th:action="@{/admin/order/status/{id}(id=${order.getId()})}">
-        <label for="status">Выбрать статус: </label>
-        <select id="status" name="status">
-            <div th:each="status: ${statuses}">
-                <option th:text="${status}" th:value="${status}">
-            </div>
-        </select>
-
-        <button type="submit" class="btn btn-primary" >Изменить статус</button>
+    <h4 class="inlineForm" th:text="'Админка: управление товарами: ' + ${user} + ' '"></h4> &emsp; &emsp;
+    <a href="/admin" class="btn btn-secondary">Управление товарами</a>
+    <a href="/admin/persons" class="btn btn-secondary">Управление пользователями</a>
+    <a href="/admin/orders" class="btn btn-primary">Управление заказами</a>
+    <form class="inlineForm" method="post" th:action="@{/logout}">
+        <button class="btn btn-danger" type="submit">Выход из личного кабинета</button>
     </form>
 
-    <hr>
-</div>
+</nav>
+
+<main>
+    <article>
+        <h1>Управление заказами</h1>
+        <hr>
+
+        <form th:method="GET" th:action="@{/order/search}">
+            <label for="tail">Поиск заказа по последним 4-м символам: </label>
+            <input type="text" id="tail" name="tail" th:value="*{tail}" maxlength="4">
+            <br><br>
+            <input type="submit" value="Применить фильтр" class="btn btn-primary"> <a href="/admin/orders"
+                                                                                      class="btn btn-primary">Показать
+            все заказы</a><br><br>
+            </div>
+        </form>
+
+        <hr>
+        <div class="flexed">
+        <section th:each="order:${orders}">
+            <h3 th:text="'Заказ №: ' + ${order.getNumber()}"></h3>
+            <img th:src="'/img/' + ${order.getProduct().getImages()[0].getFileName()}" width="300px">
+            <br>
+            <p th:text="'Наименование: ' + ${order.getProduct().getTitle()}"></p>
+            <p th:text="'Количество: ' + ${order.getCount()}"></p>
+            <p th:text="'Цена: ' + ${order.getPrice()}"></p>
+            <p th:text="'Дата : ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+            <p th:text="'Статус: ' + ${order.getStatus()}"></p>
+
+            <form th:method="POST" th:action="@{/admin/order/status/{id}(id=${order.getId()})}">
+                <label for="status">Выбрать статус: </label>
+                <select id="status" name="status">
+                    <div th:each="status: ${statuses}">
+                        <option th:text="${status}" th:value="${status}">
+                    </div>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Изменить статус</button>
+            </form>
+
+            <hr>
+        </section>
+        </div>
+    </article>
+</main>
+<footer>
+
+</footer>
 </body>
 </html>

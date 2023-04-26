@@ -3,85 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Личный кабинет</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="/css/galery.css"/>
+    <link rel="stylesheet" href="/css/navigation.css"/>
+    <link rel="icon" href="/images/ico.png" type="image/png"/>
+
 </head>
-<body>
-<h1 th:text="'Добро пожаловать ' + ${user}"></h1>
-<!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
-<!--<a href="/logout">Выход из личного кабинета</a>-->
-<!--можно  обзязать формой кнопку-->
-<form method="post" th:action="@{/logout}">
-    <button type="submit">Выход из личного кабинета</button>
-</form>
-<br>
-<form method="get" th:action="@{/account/cart}">
-    <button type="submit">Корзина</button>
-</form>
+<body class="grid">
+<header id="begin">
+    <video src="/videos/video.mp4" autoplay muted loop></video>
+    <div class="shadow"></div>
+    <div class="introContent">
+        <h1 class="main-h1">
+            Дары Сибири. Инетернет магазин грибов, ягод и орехов
+        </h1>
+    </div>
+</header>
 
-<br>
-<form method="get" th:action="@{/account/orders}">
-    <button type="submit">Мои заказы</button>
-</form>
+<nav class="login">
+    <!--логаут спринг.сека не работает при включенной защите csrf и обращении по GET. Надо перейти на POST-->
+    <!--<a href="/logout">Выход из личного кабинета</a>-->
+    <!--можно  обзязать формой кнопку-->
 
+    <h4  class="inlineForm" th:text="'Личный кабинет пользователя: ' + ${user} + ' '"></h4> &emsp; &emsp;
 
-<h3>Сортировка, поиск, фильтрация</h3>
-<form th:method="POST" th:action="@{/account/search}">
-    <fieldset>
-        <legend> Выбере параметры сортировки, поиска, фильтрации</legend>
+    <form  class="inlineForm" method="get" th:action="@{/account}">
+        <button  class="btn btn-success" type="submit">Каталог товаров</button>
+    </form>
+
+    <form class="inlineForm" method="get" th:action="@{/account/cart}">
+        <button    class="btn btn-secondary" type="submit">Корзина</button>
+    </form>
+
+    <form  class="inlineForm"  method="get" th:action="@{/account/orders}">
+        <button  class="btn btn-secondary" type="submit">Мои заказы</button>
+    </form>
+
+    <form class="inlineForm" method="post" th:action="@{/logout}">
+        <button class="btn btn-danger" type="submit">Выход из личного кабинета</button>
+    </form>
+
+</nav>
+<nav>
+    <h3>Сортировка, поиск, фильтрация</h3>
+    <form class="filter" th:method="POST" th:action="@{/account/search}">
         <label for="search">Поиск по наименованию: </label>
-        <input type="text" id="search" name="search"  th:value="*{value_search}">
-        <br>
-        <p>Цена, Р</p>
-        <label for="ot">От</label>
-        <input type="text" name="ot" id="ot"  th:value="*{value_price_ot}">
-        <label for="do">До</label>
-        <input type="text" name="do" id="do"  th:value="*{value_price_do}">
-        <br>
-        <br>
+        <input type="text" id="search" name="search" th:value="*{value_search}">
+        <hr>
+        <p>Цена, Р
+            <label for="ot">от</label>
+            <input type="text" name="ot" id="ot" th:value="*{value_price_ot}">
+            <label for="do">до</label>
+            <input type="text" name="do" id="do" th:value="*{value_price_do}">
+        </p>
+        <hr>
         <div>
-            <input type="radio" id="ascending_price" name="price" value="sort_by_asc_price">
-            <label for="ascending_price">Сортировать по возрастанию цены</label>
+            <input class="form-check-input" type="radio" id="ascending_price" name="price" value="sort_by_asc_price">
+            <label  class="form-check-label" for="ascending_price">Сортировать по возрастанию цены</label>
             <br>
-            <input type="radio" id="descending_price" name="price" value="sort_by_desc_price">
-            <label for="descending_price">Сортировать по убыванию цены</label>
-            <p>Категория товаров: </p>
-            <input type="radio" id="furniture" name="contract" value="furniture">
-            <label for="furniture">Мебель</label>
+            <input class="form-check-input" type="radio" id="descending_price" name="price" value="sort_by_desc_price">
+            <label  class="form-check-label" for="descending_price">Сортировать по убыванию цены</label>
+            <hr>
+            <input class="form-check-input" type="radio" id="furniture" name="contract" value="furniture">
+            <label  class="form-check-label" for="furniture">Грибы</label>
             <br>
-            <input type="radio" id="appliances" name="contract" value="appliances">
-            <label for="appliances">Бытовая техника</label>
+            <input class="form-check-input" type="radio" id="appliances" name="contract" value="appliances">
+            <label  class="form-check-label" for="appliances">Орехи</label>
             <br>
-            <input type="radio" id="clothes" name="contract" value="clothes">
-            <label for="clothes">Одежда</label>
+            <input class="form-check-input" type="radio" id="clothes" name="contract" value="clothes">
+            <label  class="form-check-label" for="clothes">Ягоды</label>
             <br><br>
-            <input type="submit" value="Применить фильтр">
+            <input type="submit" value="Применить фильтр" class="btn btn-primary">
+            <a href="/account"  class="btn btn-primary">Показать все</a>
         </div>
-    </fieldset>
 
-</form>
-<hr>
-<h2>Результат применения фильтров</h2>
-<div th:each="product:${search_product}">
-    <hr>
-    <br>
-    <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}"> </a>
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <a th:href="@{/account/cart/add/{id}(id=${product.getId()})}">Добавить  в корзину</a>
+    </form>
+</nav>
+<main>
+    <article>
+        <h2>Каталог вкусняшек</h2>
+        <div class="flexed">
+            <section th:each="product:${products}">
 
-</div>
-<h1>Каталог товаров</h1>
+                <img th:src="'/img/' + ${product.images[0].getFileName()}" >
+                <br>
+                <a class="btn btn-link" th:href="@{/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}" > </a>
 
-<div th:each="product:${products}">
-    <hr><br>
-    <img th:src="'/img/' + ${product.images[0].getFileName()}" width="300px">
-    <br>
-    <a th:href="@{/account/product/info/{id}(id=${product.getId()})}" th:text="${product.getTitle()}">  </a>
+                <p th:text="'Цена: ' + ${product.getPrice()}"></p>
+                <a th:href="@{/account/cart/add/{id}(id=${product.getId()})}"  class="btn btn-primary">Добавить  в корзину</a>
+            </section>
+        </div>
+    </article>
+</main>
+<footer>
 
-    <p th:text="'Цена: ' + ${product.getPrice()}"></p>
-    <a th:href="@{/account/cart/add/{id}(id=${product.getId()})}">Добавить  в корзину</a>
+</footer>
 
-</div>
 
 </body>
 </html>
